@@ -1,9 +1,15 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import Layout from "./components/layout/Layout";
+import Dashboard from "./pages/Dashboard";
+import LoanSegmentation from "./pages/LoanSegmentation";
+import ParameterAnalysis from "./pages/ParameterAnalysis";
+import PolicySimulator from "./pages/PolicySimulator";
+import WhatIfScenarios from "./pages/WhatIfScenarios";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,8 +21,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/loan-segmentation" element={<LoanSegmentation />} />
+            <Route path="/parameter-analysis" element={<ParameterAnalysis />} />
+            <Route path="/policy-simulator" element={<PolicySimulator />} />
+            <Route path="/what-if-scenarios" element={<WhatIfScenarios />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
