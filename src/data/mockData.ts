@@ -956,3 +956,83 @@ export const stressTestResults: StressTestResult[] = [
     resilience: "medium"
   }
 ];
+
+export interface LoanApprovalExplanation {
+  loanId: string;
+  borrowerName: string;
+  approvalReason: string;
+  confidenceScore: number;
+  decisionFactors: string[];
+  flowChartData: FlowChartNode[];
+}
+
+export const approvalExplanations: LoanApprovalExplanation[] = [
+  {
+    loanId: "LA001",
+    borrowerName: "Rajesh Kumar",
+    approvalReason: "Strong credit history and stable income profile",
+    confidenceScore: 98,
+    decisionFactors: [
+      "Credit score above 750",
+      "Income stability for 24+ months",
+      "Low debt-to-income ratio",
+      "Clean repayment history"
+    ],
+    flowChartData: [
+      {
+        id: "1",
+        type: "input",
+        data: { label: "Loan Application" }
+      },
+      {
+        id: "2",
+        type: "default",
+        data: { label: "Credit Score Check: 780" }
+      },
+      {
+        id: "3",
+        type: "default",
+        data: { label: "Income Verification: ₹85,000/month" }
+      },
+      {
+        id: "4",
+        type: "output",
+        data: { label: "Approved: Low Risk Profile" }
+      }
+    ]
+  },
+  {
+    loanId: "LA002",
+    borrowerName: "Priya Singh",
+    approvalReason: "Excellent debt service coverage ratio",
+    confidenceScore: 95,
+    decisionFactors: [
+      "Consistent income growth",
+      "Low existing debt",
+      "High savings ratio",
+      "Strong asset backing"
+    ],
+    flowChartData: [
+      {
+        id: "1",
+        type: "input",
+        data: { label: "Loan Application" }
+      },
+      {
+        id: "2",
+        type: "default",
+        data: { label: "Income Analysis: Positive Trend" }
+      },
+      {
+        id: "3",
+        type: "default",
+        data: { label: "Debt Analysis: Low Risk" }
+      },
+      {
+        id: "4",
+        type: "output",
+        data: { label: "Approved: Strong Financial Health" }
+      }
+    ]
+  }
+];
