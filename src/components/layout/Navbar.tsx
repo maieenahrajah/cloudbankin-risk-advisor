@@ -1,3 +1,4 @@
+
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -46,13 +47,9 @@ const Navbar = () => {
           >
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <Button size="sm" variant="default" onClick={handleLogout}>
               Sign Out
-            </Button>
-          ) : (
-            <Button size="sm" variant="default" onClick={() => navigate("/login")}>
-              Sign In
             </Button>
           )}
         </div>

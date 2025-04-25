@@ -9,7 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
@@ -17,6 +17,12 @@ const Login = () => {
     login(username, password);
     navigate("/dashboard");
   };
+
+  // If already authenticated, redirect to dashboard
+  if (isAuthenticated) {
+    navigate("/dashboard");
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center">
