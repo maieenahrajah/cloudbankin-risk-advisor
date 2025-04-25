@@ -108,10 +108,14 @@ const PatternScatterPlot = () => {
               tick={{ fontSize: 12 }}
             />
             <Tooltip 
-              formatter={(value, name) => [
-                formatValue(value as number, name === dataFieldMap[xAxis as keyof typeof dataFieldMap]?.name ? xAxis : yAxis),
-                name
-              ]}
+              formatter={(value, name) => {
+                // Convert value to number and then format it
+                const numValue = typeof value === 'number' ? value : parseFloat(value as string);
+                return [
+                  formatValue(numValue, name === dataFieldMap[xAxis as keyof typeof dataFieldMap]?.name ? xAxis : yAxis),
+                  name
+                ];
+              }}
               cursor={{ strokeDasharray: '3 3' }}
             />
             <Scatter name="Loans" data={loanData}>

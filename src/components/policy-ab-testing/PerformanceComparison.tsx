@@ -69,6 +69,18 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
     return currentScore > bestScore ? current : best;
   }, policies[0]);
 
+  // Custom formatter for tooltip values
+  const formatTooltipValue = (value: number | string, label: string) => {
+    if (typeof value === 'number') {
+      if (label.includes('Volume')) {
+        return [`₹${value.toFixed(1)}M`, 'Loan Volume'];
+      } else {
+        return [`${value}%`, label];
+      }
+    }
+    return [value, label];
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -101,7 +113,7 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
                 <XAxis type="number" domain={[0, 'dataMax']} />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} width={100} />
-                <Tooltip formatter={(value) => [`${value}%`, 'NPA Rate']} />
+                <Tooltip formatter={(value, name) => [`${value}%`, 'NPA Rate']} />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -116,7 +128,7 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
                 <XAxis type="number" domain={[0, 100]} />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} width={100} />
-                <Tooltip formatter={(value) => [`${value}%`, 'Approval Rate']} />
+                <Tooltip formatter={(value, name) => [`${value}%`, 'Approval Rate']} />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -131,7 +143,12 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
                 <XAxis type="number" />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} width={100} />
-                <Tooltip formatter={(value) => [`₹${value.toFixed(1)}M`, 'Loan Volume']} />
+                <Tooltip formatter={(value, name) => {
+                  if (typeof value === 'number') {
+                    return [`₹${value.toFixed(1)}M`, 'Loan Volume'];
+                  }
+                  return [value, name];
+                }} />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -146,7 +163,7 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
                 <XAxis type="number" domain={[0, 20]} />
                 <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} width={100} />
-                <Tooltip formatter={(value) => [`${value}%`, 'ROI']} />
+                <Tooltip formatter={(value, name) => [`${value}%`, 'ROI']} />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>

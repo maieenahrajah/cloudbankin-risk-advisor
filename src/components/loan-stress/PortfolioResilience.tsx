@@ -32,6 +32,11 @@ const PortfolioResilience = ({ results, scenario }: PortfolioResilienceProps) =>
 
   const scenarioSeverity = scenario.impactSeverity;
 
+  // Determine the appropriate alert variant based on severity
+  const getAlertVariant = (severity: string): "default" | "destructive" => {
+    return (severity === "severe" || severity === "high") ? "destructive" : "default";
+  };
+
   return (
     <div className="space-y-6">
       <div className="mb-4">
@@ -67,13 +72,7 @@ const PortfolioResilience = ({ results, scenario }: PortfolioResilienceProps) =>
         </div>
       </div>
 
-      <Alert variant={
-        scenarioSeverity === "severe" || scenarioSeverity === "high" 
-          ? "destructive" 
-          : scenarioSeverity === "medium" 
-            ? "default" 
-            : "outline"
-      }>
+      <Alert variant={getAlertVariant(scenarioSeverity)}>
         {scenarioSeverity === "severe" || scenarioSeverity === "high" ? (
           <AlertTriangle className="h-4 w-4" />
         ) : (
