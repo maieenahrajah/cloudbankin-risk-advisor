@@ -10,6 +10,14 @@ import LoanSegmentation from "./pages/LoanSegmentation";
 import ParameterAnalysis from "./pages/ParameterAnalysis";
 import PolicySimulator from "./pages/PolicySimulator";
 import WhatIfScenarios from "./pages/WhatIfScenarios";
+import AIExplanation from "./pages/AIExplanation";
+import HiddenPatterns from "./pages/HiddenPatterns";
+import PolicyABTesting from "./pages/PolicyABTesting";
+import GeoRiskMap from "./pages/GeoRiskMap";
+import BorrowerCohorts from "./pages/BorrowerCohorts";
+import PortfolioDNA from "./pages/PortfolioDNA";
+import NPARiskPredictor from "./pages/NPARiskPredictor";
+import LoanStressTesting from "./pages/LoanStressTesting";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +35,14 @@ const App = () => (
             <Route path="/parameter-analysis" element={<ParameterAnalysis />} />
             <Route path="/policy-simulator" element={<PolicySimulator />} />
             <Route path="/what-if-scenarios" element={<WhatIfScenarios />} />
+            <Route path="/ai-explanation" element={<AIExplanation />} />
+            <Route path="/hidden-patterns" element={<HiddenPatterns />} />
+            <Route path="/policy-ab-testing" element={<PolicyABTesting />} />
+            <Route path="/geo-risk-map" element={<GeoRiskMap />} />
+            <Route path="/borrower-cohorts" element={<BorrowerCohorts />} />
+            <Route path="/portfolio-dna" element={<PortfolioDNA />} />
+            <Route path="/npa-predictor" element={<NPARiskPredictor />} />
+            <Route path="/stress-testing" element={<LoanStressTesting />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -7,7 +7,15 @@ import {
   CircleCheck, 
   Home,
   Search,
-  SlidersHorizontal, 
+  SlidersHorizontal,
+  MessagesSquare,
+  Network,
+  Database,
+  Map,
+  Users,
+  Dna,
+  LineChart,
+  FileBarChart
 } from "lucide-react";
 
 interface NavItemProps {
@@ -63,6 +71,46 @@ const Sidebar = () => {
       href: "/what-if-scenarios",
       title: "What-If Scenarios",
     },
+    {
+      icon: <MessagesSquare className="h-5 w-5" />,
+      href: "/ai-explanation",
+      title: "AI Explanation",
+    },
+    {
+      icon: <Network className="h-5 w-5" />,
+      href: "/hidden-patterns",
+      title: "Hidden Patterns",
+    },
+    {
+      icon: <Database className="h-5 w-5" />,
+      href: "/policy-ab-testing",
+      title: "Policy A/B Testing",
+    },
+    {
+      icon: <Map className="h-5 w-5" />,
+      href: "/geo-risk-map",
+      title: "Geo-Risk Map",
+    },
+    {
+      icon: <Users className="h-5 w-5" />,
+      href: "/borrower-cohorts",
+      title: "Borrower Cohorts",
+    },
+    {
+      icon: <Dna className="h-5 w-5" />,
+      href: "/portfolio-dna",
+      title: "Portfolio DNA",
+    },
+    {
+      icon: <LineChart className="h-5 w-5" />,
+      href: "/npa-predictor",
+      title: "NPA Predictor",
+    },
+    {
+      icon: <FileBarChart className="h-5 w-5" />,
+      href: "/stress-testing",
+      title: "Stress Testing",
+    },
   ];
 
   return (
@@ -72,7 +120,7 @@ const Sidebar = () => {
           <BarChart className="h-6 w-6 text-primary mr-2" />
           <span className="text-lg font-semibold tracking-tight">CPA</span>
         </div>
-        <nav className="grid gap-1 px-2 pt-4">
+        <nav className="grid gap-1 px-2 pt-4 max-h-[calc(100vh-110px)] overflow-y-auto">
           {navItems.map((item) => (
             <NavItem
               key={item.href}
