@@ -1,10 +1,11 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/layout/Layout";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import LoanSegmentation from "./pages/LoanSegmentation";
 import ParameterAnalysis from "./pages/ParameterAnalysis";
@@ -25,28 +26,32 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="/loan-segmentation" element={<LoanSegmentation />} />
-            <Route path="/parameter-analysis" element={<ParameterAnalysis />} />
-            <Route path="/policy-simulator" element={<PolicySimulator />} />
-            <Route path="/what-if-scenarios" element={<WhatIfScenarios />} />
-            <Route path="/ai-explanation" element={<AIExplanation />} />
-            <Route path="/hidden-patterns" element={<HiddenPatterns />} />
-            <Route path="/policy-ab-testing" element={<PolicyABTesting />} />
-            <Route path="/geo-risk-map" element={<GeoRiskMap />} />
-            <Route path="/borrower-cohorts" element={<BorrowerCohorts />} />
-            <Route path="/portfolio-dna" element={<PortfolioDNA />} />
-            <Route path="/npa-predictor" element={<NPARiskPredictor />} />
-            <Route path="/stress-testing" element={<LoanStressTesting />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/loan-segmentation" element={<LoanSegmentation />} />
+              <Route path="/parameter-analysis" element={<ParameterAnalysis />} />
+              <Route path="/policy-simulator" element={<PolicySimulator />} />
+              <Route path="/what-if-scenarios" element={<WhatIfScenarios />} />
+              <Route path="/ai-explanation" element={<AIExplanation />} />
+              <Route path="/hidden-patterns" element={<HiddenPatterns />} />
+              <Route path="/policy-ab-testing" element={<PolicyABTesting />} />
+              <Route path="/geo-risk-map" element={<GeoRiskMap />} />
+              <Route path="/borrower-cohorts" element={<BorrowerCohorts />} />
+              <Route path="/portfolio-dna" element={<PortfolioDNA />} />
+              <Route path="/npa-predictor" element={<NPARiskPredictor />} />
+              <Route path="/stress-testing" element={<LoanStressTesting />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
