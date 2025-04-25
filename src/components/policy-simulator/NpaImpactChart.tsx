@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
 interface NpaImpactChartProps {
   currentNpa: number;
@@ -12,6 +12,11 @@ const NpaImpactChart = ({ currentNpa, targetNpa }: NpaImpactChartProps) => {
     { name: 'Current', npa: currentNpa },
     { name: 'Target', npa: targetNpa },
   ];
+
+  // Define colors for the bars
+  const getBarColor = (name: string) => {
+    return name === 'Current' ? "#ef4444" : "#22c55e";
+  };
 
   return (
     <Card className="shadow-card">
@@ -39,9 +44,13 @@ const NpaImpactChart = ({ currentNpa, targetNpa }: NpaImpactChartProps) => {
               />
               <Bar 
                 dataKey="npa" 
-                fill={(d) => d.name === 'Current' ? '#ef4444' : '#22c55e'}
+                fill="#8884d8" // Default fill color (will be overridden by Cell components)
                 radius={[4, 4, 0, 0]}
-              />
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={getBarColor(entry.name)} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
