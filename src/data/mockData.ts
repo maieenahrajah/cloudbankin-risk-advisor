@@ -193,6 +193,15 @@ export const correlationHeatmapData = [
   { parameter1: 'Previous Defaults', parameter2: 'Default', value: 0.83 },
 ];
 
+// Define the FlowChartNode interface before using it
+export interface FlowChartNode {
+  id: string;
+  type: string;
+  data: {
+    label: string;
+  };
+}
+
 // AI Explanation Engine Mock Data
 export interface LoanRejectionExplanation {
   loanId: string;

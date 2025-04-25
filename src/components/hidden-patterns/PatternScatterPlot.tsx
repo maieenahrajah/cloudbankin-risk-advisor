@@ -96,7 +96,7 @@ const PatternScatterPlot = () => {
               dataKey={xAxis} 
               name={dataFieldMap[xAxis as keyof typeof dataFieldMap]?.name}
               domain={dataFieldMap[xAxis as keyof typeof dataFieldMap]?.domain}
-              tickFormatter={(value) => formatValue(value, xAxis)}
+              tickFormatter={(value: number) => String(formatValue(value, xAxis))}
               tick={{ fontSize: 12 }}
             />
             <YAxis 
@@ -104,7 +104,7 @@ const PatternScatterPlot = () => {
               dataKey={yAxis} 
               name={dataFieldMap[yAxis as keyof typeof dataFieldMap]?.name}
               domain={dataFieldMap[yAxis as keyof typeof dataFieldMap]?.domain}
-              tickFormatter={(value) => formatValue(value, yAxis)}
+              tickFormatter={(value: number) => String(formatValue(value, yAxis))}
               tick={{ fontSize: 12 }}
             />
             <Tooltip 
