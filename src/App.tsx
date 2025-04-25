@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,23 +34,22 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/dashboard" element={<Layout />}>
-              <Route index element={<Dashboard />} />
+            <Route path="/" element={<Layout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/loan-segmentation" element={<LoanSegmentation />} />
+              <Route path="/parameter-analysis" element={<ParameterAnalysis />} />
+              <Route path="/policy-simulator" element={<PolicySimulator />} />
+              <Route path="/what-if-scenarios" element={<WhatIfScenarios />} />
+              <Route path="/ai-explanation" element={<AIExplanation />} />
+              <Route path="/hidden-patterns" element={<HiddenPatterns />} />
+              <Route path="/policy-ab-testing" element={<PolicyABTesting />} />
+              <Route path="/geo-risk-map" element={<GeoRiskMap />} />
+              <Route path="/borrower-cohorts" element={<BorrowerCohorts />} />
+              <Route path="/portfolio-dna" element={<PortfolioDNA />} />
+              <Route path="/npa-predictor" element={<NPARiskPredictor />} />
+              <Route path="/stress-testing" element={<LoanStressTesting />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="/loan-segmentation" element={<Layout />}>
-              <Route index element={<LoanSegmentation />} />
-            </Route>
-            <Route path="/parameter-analysis" element={<ParameterAnalysis />} />
-            <Route path="/policy-simulator" element={<PolicySimulator />} />
-            <Route path="/what-if-scenarios" element={<WhatIfScenarios />} />
-            <Route path="/ai-explanation" element={<AIExplanation />} />
-            <Route path="/hidden-patterns" element={<HiddenPatterns />} />
-            <Route path="/policy-ab-testing" element={<PolicyABTesting />} />
-            <Route path="/geo-risk-map" element={<GeoRiskMap />} />
-            <Route path="/borrower-cohorts" element={<BorrowerCohorts />} />
-            <Route path="/portfolio-dna" element={<PortfolioDNA />} />
-            <Route path="/npa-predictor" element={<NPARiskPredictor />} />
-            <Route path="/stress-testing" element={<LoanStressTesting />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
