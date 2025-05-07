@@ -416,6 +416,7 @@ export const incomeCohorts: BorrowerCohort[] = [
 
 // Dashboard KPI data
 export interface KPI {
+  id: string;
   title: string;
   value: string;
   unit?: string;
@@ -426,6 +427,7 @@ export interface KPI {
 
 export const kpiData: KPI[] = [
   {
+    id: "npa-rate",
     title: "NPA Rate",
     value: "3.2",
     unit: "%",
@@ -434,6 +436,7 @@ export const kpiData: KPI[] = [
     description: "vs. last quarter"
   },
   {
+    id: "loan-approval",
     title: "Loan Approval Rate",
     value: "68.5",
     unit: "%",
@@ -442,6 +445,7 @@ export const kpiData: KPI[] = [
     description: "vs. last quarter"
   },
   {
+    id: "dpd-90",
     title: "90+ DPD",
     value: "2.8",
     unit: "%",
@@ -450,6 +454,7 @@ export const kpiData: KPI[] = [
     description: "vs. last quarter"
   },
   {
+    id: "risk-adjusted-return",
     title: "Risk-Adjusted Return",
     value: "11.2",
     unit: "%",
@@ -935,40 +940,60 @@ export const loanTypeMix: LoanTypeMix[] = [
 export interface RiskPattern {
   id: string;
   title: string;
+  pattern: string;
   description: string;
   confidence: number;
   impact: number; // 0-100 scale
   variables: string[];
   actionable: boolean;
+  impactedLoans: number;
+  defaultRate: number;
+  averageRate: number;
+  increase: number;
 }
 
 export const hiddenRiskPatterns: RiskPattern[] = [
   {
     id: "pattern-1",
     title: "Sequential EMI Payment Behavior",
+    pattern: "Sequential EMI Payment Behavior",
     description: "Borrowers who pay EMIs in a specific sequence across multiple loans show 35% higher default likelihood when the sequence is disrupted",
     confidence: 87,
     impact: 72,
     variables: ["payment_sequence", "payment_timing", "loan_count"],
-    actionable: true
+    actionable: true,
+    impactedLoans: 1250,
+    defaultRate: 4.8,
+    averageRate: 3.2,
+    increase: 1.6
   },
   {
     id: "pattern-2",
     title: "Spending Pattern Shifts",
+    pattern: "Spending Pattern Shifts",
     description: "Abrupt changes in discretionary spending 2-3 months before default events",
     confidence: 82,
     impact: 68,
     variables: ["transaction_patterns", "discretionary_spend", "essential_spend_ratio"],
-    actionable: true
+    actionable: true,
+    impactedLoans: 980,
+    defaultRate: 5.2,
+    averageRate: 3.2,
+    increase: 2.0
   },
   {
     id: "pattern-3",
     title: "Digital Behavior Anomalies",
+    pattern: "Digital Behavior Anomalies",
     description: "Changes in app usage patterns correlate with 28% of defaults within 60 days",
     confidence: 76,
     impact: 58,
     variables: ["login_frequency", "feature_usage", "transaction_attempts"],
-    actionable: false
+    actionable: false,
+    impactedLoans: 725,
+    defaultRate: 4.5,
+    averageRate: 3.2,
+    increase: 1.3
   }
 ];
 

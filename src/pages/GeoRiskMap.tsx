@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import IndiaMap from "@/components/geo-risk/IndiaMap";
 import RegionDetails from "@/components/geo-risk/RegionDetails";
+import { RegionData } from "@/data/mockData";
 
-// Mock data for geo risk
-const geoRiskData = [
+// Type-safe mock data for geo risk with explicit riskLevel values
+const geoRiskData: RegionData[] = [
   {
     id: "region-1",
-    state: "Maharashtra",  // Changed from name to state
+    state: "Maharashtra",
     riskScore: 65,
     loanVolume: 1250000000, // 125 Cr
     npaRate: 3.2,
@@ -79,7 +80,7 @@ const geoRiskData = [
 ];
 
 const GeoRiskMap = () => {
-  const [selectedRegion, setSelectedRegion] = useState(geoRiskData[0]);
+  const [selectedRegion, setSelectedRegion] = useState<RegionData>(geoRiskData[0]);
   
   return (
     <div className="space-y-6">
@@ -95,7 +96,7 @@ const GeoRiskMap = () => {
           <CardContent className="pt-6">
             <IndiaMap 
               regions={geoRiskData} 
-              onRegionSelect={(region) => setSelectedRegion(region)}
+              onRegionSelect={setSelectedRegion}
               selectedRegion={selectedRegion}
             />
           </CardContent>

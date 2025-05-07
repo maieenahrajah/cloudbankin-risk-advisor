@@ -3,23 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info, AlertTriangle, XCircle, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-
-interface LoanRejectionExplanation {
-  loanId: string;
-  borrowerName: string;
-  rejectionReason: string;
-  confidenceScore: number;
-  decisionFactors: { factor: string; impact: string; value: string | number; threshold?: string | number; }[];
-  alternatives: string[]; // Adding this missing property
-}
-
-interface LoanApprovalExplanation {
-  loanId: string;
-  borrowerName: string;
-  approvalReason: string;
-  confidenceScore: number;
-  decisionFactors: string[];
-}
+import { LoanRejectionExplanation, LoanApprovalExplanation } from "@/data/mockData";
 
 interface DecisionFlowChartProps {
   loan: LoanRejectionExplanation | LoanApprovalExplanation;
@@ -110,7 +94,10 @@ const DecisionFlowChart = ({ loan }: DecisionFlowChartProps) => {
                 <CardContent className="py-3 flex items-center">
                   <CheckCircle className="h-5 w-5 text-good" />
                   <div className="ml-3">
-                    <div className="font-medium">{factor}</div>
+                    <div className="font-medium">{factor.factor}</div>
+                    <div className="text-sm text-muted-foreground">
+                      Value: {factor.value} (Threshold: {factor.threshold})
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -118,20 +105,6 @@ const DecisionFlowChart = ({ loan }: DecisionFlowChartProps) => {
           )}
         </div>
       </div>
-
-      {isRejection && (loan as LoanRejectionExplanation).alternatives && (
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium">Alternative Options</h4>
-          <div className="space-y-2">
-            {(loan as LoanRejectionExplanation).alternatives.map((alternative, index) => (
-              <div key={index} className="flex items-start">
-                <CheckCircle className="h-5 w-5 text-good mr-2 mt-0.5 shrink-0" />
-                <p className="text-sm">{alternative}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
