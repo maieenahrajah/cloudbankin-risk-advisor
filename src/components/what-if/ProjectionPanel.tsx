@@ -2,6 +2,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { whatIfBaselineData } from "@/data/mockData";
 import { calculateRiskScore } from "@/lib/riskCalculations";
+import { Gauge } from "lucide-react";
+import { useMemo } from "react";
 
 interface ProjectionPanelProps {
   scenario: {
@@ -138,16 +140,30 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
     return Math.min(Math.max(newApprovalRate, 15), 95);
   };
 
-  const projectedNpa = calculateProjectedNpa();
-  const approvalRate = calculateApprovalChange();
+  // Calculate risk score & metrics
+  const projectedNpa = useMemo(() => calculateProjectedNpa(), [scenario]);
+  const approvalRate = useMemo(() => calculateApprovalChange(), [scenario]);
   const npaReduction = whatIfBaselineData.npa - projectedNpa;
   const npaReductionPercent = (npaReduction / whatIfBaselineData.npa) * 100;
   const approvalRateChange = approvalRate - whatIfBaselineData.approvalRate;
-  
-  // Calculate risk score
-  const riskScore = calculateRiskScore(scenario);
-  const baselineRiskScore = calculateRiskScore(whatIfBaselineData);
+  const riskScore = useMemo(() => calculateRiskScore(scenario), [scenario]);
+  const baselineRiskScore = useMemo(() => calculateRiskScore(whatIfBaselineData), []);
   const riskScoreChange = riskScore - baselineRiskScore;
+  
+  // Calculate risk category
+  const getRiskCategory = (score: number) => {
+    if (score < 600) return { label: "Very Low Risk", color: "#16a34a" };
+    if (score < 650) return { label: "Low Risk", color: "#84cc16" };
+    if (score < 700) return { label: "Moderate Risk", color: "#facc15" };
+    if (score < 750) return { label: "High Risk", color: "#f97316" };
+    return { label: "Very High Risk", color: "#ef4444" };
+  };
+  
+  const riskCategory = getRiskCategory(riskScore);
+  const baselineCategory = getRiskCategory(baselineRiskScore);
+  
+  // Calculate gauge position for risk meter (0-100%)
+  const gaugePosition = Math.min(Math.max((riskScore - 500) / 500 * 100, 0), 100);
   
   return (
     <Card className="shadow-card">
@@ -190,6 +206,26 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
             </span>
           </div>
           
+          {/* Risk Meter */}
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-sm">Risk Category</span>
+              <span className="text-sm font-medium" style={{ color: riskCategory.color }}>
+                {riskCategory.label}
+              </span>
+            </div>
+            <div className="w-full h-2 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full">
+              <div 
+                className="h-4 w-1 bg-white border border-gray-300 rounded-full relative -top-1"
+                style={{ marginLeft: `${gaugePosition}%`, transition: "margin 0.5s ease" }}
+              ></div>
+            </div>
+            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <span>Low Risk</span>
+              <span>High Risk</span>
+            </div>
+          </div>
+          
           {/* Approval Rate Impact */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
@@ -210,19 +246,39 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
             </div>
           </div>
           
-          {/* Policy Strictness */}
+          {/* Key Factors */}
           <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Policy Strictness</span>
-              <span className="text-sm font-medium">
-                {approvalRateChange < -10 
-                  ? 'Very High' 
-                  : approvalRateChange < -5 
-                    ? 'High' 
-                    : approvalRateChange > 5 
-                      ? 'Low' 
-                      : 'Moderate'}
-              </span>
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Gauge className="h-4 w-4" />
+              <span>Key Risk Factors</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Credit Enquiries:</span> 
+                <span>{scenario.maxCreditEnquiries}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Credit Score:</span>
+                <span>{scenario.creditScore}</span>
+              </div>
+              {scenario.chequeBounces && scenario.chequeBounces > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Cheque Bounces:</span>
+                  <span className="text-red-500 font-medium">{scenario.chequeBounces}</span>
+                </div>
+              )}
+              {scenario.activeDpd90Plus && scenario.activeDpd90Plus > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">90+ DPD:</span>
+                  <span className="text-red-500 font-medium">{scenario.activeDpd90Plus}</span>
+                </div>
+              )}
+              {scenario.willfulDefault && (
+                <div className="flex justify-between col-span-2">
+                  <span className="text-muted-foreground">Willful Default:</span>
+                  <span className="text-red-500 font-medium">Yes</span>
+                </div>
+              )}
             </div>
           </div>
           
