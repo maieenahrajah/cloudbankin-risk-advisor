@@ -1,8 +1,24 @@
 
-import { RegionData } from "@/data/mockData";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+
+interface RegionData {
+  id: string;
+  state: string;
+  riskScore: number;
+  loanVolume: number;
+  npaRate: number;
+  keyFactors: string[];
+  riskLevel: "high" | "medium" | "low";
+  trend: "improving" | "stable" | "worsening";
+  approvalRate: number;
+  suggestedEIRCap: number;
+  districts?: {
+    name: string;
+    npaRate: number;
+  }[];
+}
 
 interface RegionDetailsProps {
   region: RegionData;

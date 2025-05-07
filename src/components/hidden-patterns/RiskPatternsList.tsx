@@ -1,9 +1,22 @@
 
-import { RiskPattern } from "@/data/mockData";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { AlertTriangle } from "lucide-react";
+
+interface RiskPattern {
+  id: string;
+  pattern: string;  // Changed from title
+  description: string;
+  confidence: number;
+  impact: number;
+  variables: string[];
+  actionable: boolean;
+  impactedLoans: number;
+  defaultRate: number;
+  averageRate: number;
+  increase: number;
+}
 
 interface RiskPatternsListProps {
   patterns: RiskPattern[];

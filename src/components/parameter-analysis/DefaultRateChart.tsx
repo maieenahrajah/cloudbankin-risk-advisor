@@ -1,9 +1,19 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { defaultRateByCreditScore } from "@/data/mockData";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const DefaultRateChart = () => {
+  // Mock data for default rates by credit score bands
+  const defaultRateByCreditScore = [
+    { band: "500-550", defaultRate: 18.5 },
+    { band: "551-600", defaultRate: 12.3 },
+    { band: "601-650", defaultRate: 7.8 },
+    { band: "651-700", defaultRate: 4.2 },
+    { band: "701-750", defaultRate: 2.1 },
+    { band: "751-800", defaultRate: 0.9 },
+    { band: "801-850", defaultRate: 0.3 }
+  ];
+
   return (
     <Card className="shadow-card">
       <CardHeader>

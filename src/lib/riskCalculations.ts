@@ -1,131 +1,64 @@
 
-// Risk calculation utilities for the What-If scenario module
-
 /**
  * Calculate risk score based on scenario parameters
  * Lower score is better (less risky)
  */
 export const calculateRiskScore = (scenario: any): number => {
-  // Base score - lower is better
-  let score = 500;
+  let score = 700; // Base score
   
-  // Credit score impact (good credit score lowers risk)
-  score -= (scenario.creditScore - 650) * 0.5;
+  // Basic parameter impact
+  score -= Math.max(0, scenario.creditScore - 650) * 0.5; // Higher credit score reduces risk
+  score += Math.max(0, 650 - scenario.creditScore) * 1.0; // Lower credit score increases risk
+  score += scenario.maxCreditEnquiries * 15; // More credit enquiries increase risk
+  score -= Math.min(30000, scenario.minABB) / 1000; // Higher minimum balance reduces risk
+  score += scenario.maxEIR * 200; // Higher expense-to-income ratio increases risk
   
-  // Credit enquiries impact (more enquiries increases risk)
-  score += scenario.maxCreditEnquiries * 10;
-  
-  // Bank balance impact (higher balance lowers risk)
-  score -= Math.min(scenario.minABB / 1000, 30);
-  
-  // EIR impact (higher EIR increases risk)
-  score += scenario.maxEIR * 100;
-  
-  // Additional factors impact
+  // Advanced parameter impacts
   if (scenario.chequeBounces) {
-    score += scenario.chequeBounces * 20;
+    score += scenario.chequeBounces * 30;
   }
   
   if (scenario.willfulDefault) {
-    score += 150;
+    score += 150; // Large penalty for willful default
   }
   
+  // Loan counts
   if (scenario.unsecuredLoansCount) {
-    score += scenario.unsecuredLoansCount * 15;
+    score += scenario.unsecuredLoansCount * 20;
   }
   
   if (scenario.securedLoansCount) {
-    score += scenario.securedLoansCount * 7;
+    score += scenario.securedLoansCount * 10; // Less impact than unsecured
   }
   
-  // DPD impacts
-  if (scenario.activeDpd1Plus) {
-    score += scenario.activeDpd1Plus * 5;
-  }
-  
-  if (scenario.closedDpd1Plus) {
-    score += scenario.closedDpd1Plus * 3;
-  }
-  
-  if (scenario.activeDpd30Plus) {
-    score += scenario.activeDpd30Plus * 15;
-  }
-  
-  if (scenario.closedDpd30Plus) {
-    score += scenario.closedDpd30Plus * 10;
-  }
-  
-  if (scenario.activeDpd60Plus) {
-    score += scenario.activeDpd60Plus * 30;
-  }
-  
-  if (scenario.closedDpd60Plus) {
-    score += scenario.closedDpd60Plus * 20;
-  }
-  
-  if (scenario.activeDpd90Plus) {
-    score += scenario.activeDpd90Plus * 50;
-  }
-  
-  if (scenario.closedDpd90Plus) {
-    score += scenario.closedDpd90Plus * 35;
-  }
+  // DPD impacts - more severe the longer the DPD
+  score += (scenario.activeDpd1Plus || 0) * 10;
+  score += (scenario.closedDpd1Plus || 0) * 5;
+  score += (scenario.activeDpd30Plus || 0) * 20;
+  score += (scenario.closedDpd30Plus || 0) * 10;
+  score += (scenario.activeDpd60Plus || 0) * 40;
+  score += (scenario.closedDpd60Plus || 0) * 20;
+  score += (scenario.activeDpd90Plus || 0) * 80;
+  score += (scenario.closedDpd90Plus || 0) * 40;
   
   // Settlements and write-offs
-  if (scenario.ccSettlements3Years) {
-    score += scenario.ccSettlements3Years * 25;
-  }
+  score += (scenario.ccSettlements3Years || 0) * 40;
+  score += (scenario.ccWriteOffs3Years || 0) * 60;
+  score += (scenario.nonCcSettlements3Years || 0) * 50;
+  score += (scenario.nonCcWriteOffs3Years || 0) * 70;
   
-  if (scenario.ccWriteOffs3Years) {
-    score += scenario.ccWriteOffs3Years * 40;
-  }
-  
-  if (scenario.nonCcSettlements3Years) {
-    score += scenario.nonCcSettlements3Years * 30;
-  }
-  
-  if (scenario.nonCcWriteOffs3Years) {
-    score += scenario.nonCcWriteOffs3Years * 45;
-  }
-  
-  // Defaults
-  if (scenario.activeDefaultsCount) {
-    score += scenario.activeDefaultsCount * 35;
-  }
-  
-  if (scenario.closedDefaultsCount) {
-    score += scenario.closedDefaultsCount * 20;
-  }
-  
-  // Open and closed accounts
-  if (scenario.openLoanAccounts > 2) {
-    score += (scenario.openLoanAccounts - 2) * 10;
-  }
+  // Default counts
+  score += (scenario.activeDefaultsCount || 0) * 50;
+  score += (scenario.closedDefaultsCount || 0) * 25;
   
   // EMI bounces
-  if (scenario.emiBounce0) {
-    score += scenario.emiBounce0 * 25;
-  }
+  score += (scenario.emiBounce0 || 0) * 5;
+  score += (scenario.emiBounce1 || 0) * 10;
+  score += (scenario.emiBounce2 || 0) * 20;
+  score += (scenario.emiBounce3 || 0) * 40;
   
-  if (scenario.emiBounce1) {
-    score += scenario.emiBounce1 * 20;
-  }
-  
-  if (scenario.emiBounce2) {
-    score += scenario.emiBounce2 * 15;
-  }
-  
-  if (scenario.emiBounce3) {
-    score += scenario.emiBounce3 * 10;
-  }
-  
-  // Bureau history (longer history is better)
-  if (scenario.bureauHistory < 24) {
-    score += (24 - scenario.bureauHistory) * 2;
-  } else {
-    score -= Math.min((scenario.bureauHistory - 24) * 0.5, 10);
-  }
-  
-  // Ensure score stays within reasonable bounds (300-900, like credit scores)
-  return Math.max(Math.min(Math.round(score), 900), 300);
+  // Clamp score to reasonable range
+  return Math.max(Math.min(score, 1000), 300);
 };
+
+// Additional risk calculation functions can be added here

@@ -1,14 +1,24 @@
 
 import { useState } from "react";
-import { ResponsiveContainer, Tooltip } from "recharts";
-import { multidimensionalCorrelations } from "@/data/mockData";
+
+interface CorrelationData {
+  parameter1: string;
+  parameter2: string;
+  value: number;
+}
 
 const CorrelationHeatmap = () => {
-  const [hoveredCell, setHoveredCell] = useState<{
-    parameter1: string;
-    parameter2: string;
-    value: number;
-  } | null>(null);
+  const [hoveredCell, setHoveredCell] = useState<CorrelationData | null>(null);
+
+  // Mock data for correlation
+  const multidimensionalCorrelations: CorrelationData[] = [
+    { parameter1: "Credit Score", parameter2: "Default Risk", value: -0.75 },
+    { parameter1: "Credit Score", parameter2: "Income", value: 0.45 },
+    { parameter1: "Income", parameter2: "Default Risk", value: -0.60 },
+    { parameter1: "Loan Amount", parameter2: "Default Risk", value: 0.35 },
+    { parameter1: "Loan Amount", parameter2: "Income", value: 0.65 },
+    // Add more correlations as needed
+  ];
 
   // Extract unique parameters
   const parameters = Array.from(

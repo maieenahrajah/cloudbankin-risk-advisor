@@ -1,10 +1,20 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { correlationHeatmapData } from "@/data/mockData";
+
+interface CorrelationItem {
+  parameter1: string;
+  value: number;
+}
 
 const CorrelationHeatmap = () => {
-  // Group data for the heatmap
-  const parameters = ["Credit Score", "DPD", "ABB", "EIR", "Previous Defaults"];
+  // Mock data for correlations
+  const correlationData: CorrelationItem[] = [
+    { parameter1: "Credit Score", value: -0.75 },
+    { parameter1: "DPD", value: 0.82 },
+    { parameter1: "ABB", value: -0.51 },
+    { parameter1: "EIR", value: 0.65 },
+    { parameter1: "Previous Defaults", value: 0.72 }
+  ];
   
   // Helper function to get color based on correlation value
   const getCorrelationColor = (value: number) => {
@@ -15,12 +25,6 @@ const CorrelationHeatmap = () => {
     }
     return `rgb(239, 68, 68, ${absValue})`;
   };
-  
-  // Helper function to find correlation for a parameter
-  const findCorrelation = (parameter: string) => {
-    const entry = correlationHeatmapData.find(d => d.parameter1 === parameter);
-    return entry ? entry.value : 0;
-  };
 
   return (
     <Card className="shadow-card">
@@ -30,13 +34,13 @@ const CorrelationHeatmap = () => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-4">
-          {parameters.map((parameter) => {
-            const correlation = findCorrelation(parameter);
+          {correlationData.map((parameter) => {
+            const correlation = parameter.value;
             const absCorrelation = Math.abs(correlation);
             
             return (
-              <div key={parameter} className="flex items-center">
-                <div className="w-32 text-sm">{parameter}</div>
+              <div key={parameter.parameter1} className="flex items-center">
+                <div className="w-32 text-sm">{parameter.parameter1}</div>
                 <div className="flex-1 px-2">
                   <div className="w-full h-6 bg-secondary rounded-md relative">
                     <div 

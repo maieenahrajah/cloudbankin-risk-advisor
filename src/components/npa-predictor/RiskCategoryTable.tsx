@@ -1,5 +1,4 @@
 
-import { RiskCategoryForecast } from "@/data/mockData";
 import { 
   Table, 
   TableBody, 
@@ -11,11 +10,37 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpIcon, ArrowDownIcon, MinusIcon } from "lucide-react";
 
+interface RiskCategoryForecast {
+  category: string;
+  currentNPA: number;
+  forecast1Month: number;
+  forecast3Month: number;
+  forecast6Month: number;
+  trend: "up" | "down" | "stable";
+  riskLevel: "low" | "medium" | "high" | "severe";
+  // Add computed properties for use in the component
+  forecastNPA?: number;
+  change?: number;
+}
+
 interface RiskCategoryTableProps {
   categories: RiskCategoryForecast[];
 }
 
 const RiskCategoryTable = ({ categories }: RiskCategoryTableProps) => {
+  // Add computed properties to each category
+  const processedCategories = categories.map(category => {
+    // Use forecast3Month as the main forecast display
+    const forecastNPA = category.forecast3Month;
+    const change = forecastNPA - category.currentNPA;
+    
+    return {
+      ...category,
+      forecastNPA,
+      change
+    };
+  });
+
   const getRiskBadge = (level: string) => {
     switch (level) {
       case "high":
@@ -56,7 +81,7 @@ const RiskCategoryTable = ({ categories }: RiskCategoryTableProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.map((category) => (
+          {processedCategories.map((category) => (
             <TableRow key={category.category}>
               <TableCell className="font-medium">{category.category}</TableCell>
               <TableCell>{category.currentNPA}%</TableCell>

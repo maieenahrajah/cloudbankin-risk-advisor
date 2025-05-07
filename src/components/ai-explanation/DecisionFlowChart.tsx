@@ -2,8 +2,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info, AlertTriangle, XCircle, CheckCircle } from "lucide-react";
-import { LoanRejectionExplanation, LoanApprovalExplanation } from "@/data/mockData";
 import { Badge } from "@/components/ui/badge";
+
+interface LoanRejectionExplanation {
+  loanId: string;
+  borrowerName: string;
+  rejectionReason: string;
+  confidenceScore: number;
+  decisionFactors: { factor: string; impact: string; value: string | number; threshold?: string | number; }[];
+  alternatives: string[]; // Adding this missing property
+}
+
+interface LoanApprovalExplanation {
+  loanId: string;
+  borrowerName: string;
+  approvalReason: string;
+  confidenceScore: number;
+  decisionFactors: string[];
+}
 
 interface DecisionFlowChartProps {
   loan: LoanRejectionExplanation | LoanApprovalExplanation;
@@ -103,7 +119,7 @@ const DecisionFlowChart = ({ loan }: DecisionFlowChartProps) => {
         </div>
       </div>
 
-      {isRejection && (
+      {isRejection && (loan as LoanRejectionExplanation).alternatives && (
         <div className="space-y-4">
           <h4 className="text-sm font-medium">Alternative Options</h4>
           <div className="space-y-2">

@@ -1,5 +1,22 @@
 
-import { RegionData } from "@/data/mockData";
+import { Badge } from "@/components/ui/badge";
+
+interface RegionData {
+  id: string;
+  state: string;  // Changed from name to state
+  riskScore: number;
+  loanVolume: number;
+  npaRate: number;
+  keyFactors: string[];
+  riskLevel: "high" | "medium" | "low";
+  trend: "improving" | "stable" | "worsening";
+  approvalRate: number;
+  suggestedEIRCap: number;
+  districts?: {
+    name: string;
+    npaRate: number;
+  }[];
+}
 
 interface IndiaMapProps {
   regions: RegionData[];
