@@ -69,15 +69,17 @@ const AdvancedControls = ({ scenario, setScenario }: AdvancedControlsProps) => {
                 <Label htmlFor="chequeBounces">No. of Cheque Bounces</Label>
                 <span className="text-sm font-mono">{scenario.chequeBounces}</span>
               </div>
-              <Slider
-                id="chequeBounces"
-                min={0}
-                max={10}
-                step={1}
-                value={[scenario.chequeBounces]}
-                onValueChange={(value) => handleNumberChange('chequeBounces', value)}
-                className="flex-1"
-              />
+              <div className="flex gap-2 items-center">
+                <Slider
+                  id="chequeBounces"
+                  min={0}
+                  max={10}
+                  step={1}
+                  value={[scenario.chequeBounces]}
+                  onValueChange={(value) => handleNumberChange('chequeBounces', value)}
+                  className="flex-1"
+                />
+              </div>
               <p className="text-xs text-muted-foreground">Number of cheque bounces in the last 6 months</p>
             </div>
             

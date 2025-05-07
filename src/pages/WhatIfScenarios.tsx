@@ -9,6 +9,7 @@ import AdvancedControls from "@/components/what-if/AdvancedControls";
 import ScenarioManager from "@/components/what-if/ScenarioManager";
 
 const WhatIfScenarios = () => {
+  // Create more realistic default scenario with non-zero values for advanced parameters
   const [scenario, setScenario] = useState({
     // Basic variables
     creditScore: whatIfBaselineData.creditScore,
@@ -17,79 +18,85 @@ const WhatIfScenarios = () => {
     maxEIR: whatIfBaselineData.maxEIR,
     
     // Additional variables
-    chequeBounces: whatIfBaselineData.chequeBounces,
-    willfulDefault: whatIfBaselineData.willfulDefault,
-    unsecuredLoansCount: whatIfBaselineData.unsecuredLoansCount,
-    securedLoansCount: whatIfBaselineData.securedLoansCount,
-    bureauHistory: whatIfBaselineData.bureauHistory,
+    chequeBounces: 2,
+    willfulDefault: false,
+    unsecuredLoansCount: 3,
+    securedLoansCount: 1,
+    bureauHistory: 36,
     
     // DPD variables
-    activeDpd1Plus: whatIfBaselineData.activeDpd1Plus,
-    closedDpd1Plus: whatIfBaselineData.closedDpd1Plus,
-    activeDpd30Plus: whatIfBaselineData.activeDpd30Plus,
-    closedDpd30Plus: whatIfBaselineData.closedDpd30Plus,
-    activeDpd60Plus: whatIfBaselineData.activeDpd60Plus,
-    closedDpd60Plus: whatIfBaselineData.closedDpd60Plus,
-    activeDpd90Plus: whatIfBaselineData.activeDpd90Plus,
-    closedDpd90Plus: whatIfBaselineData.closedDpd90Plus,
+    activeDpd1Plus: 2,
+    closedDpd1Plus: 1,
+    activeDpd30Plus: 1,
+    closedDpd30Plus: 1,
+    activeDpd60Plus: 0,
+    closedDpd60Plus: 1,
+    activeDpd90Plus: 0,
+    closedDpd90Plus: 0,
     
     // Credit card and loan history
-    ccSettlements3Years: whatIfBaselineData.ccSettlements3Years,
-    ccWriteOffs3Years: whatIfBaselineData.ccWriteOffs3Years,
-    nonCcSettlements3Years: whatIfBaselineData.nonCcSettlements3Years,
-    nonCcWriteOffs3Years: whatIfBaselineData.nonCcWriteOffs3Years,
+    ccSettlements3Years: 1,
+    ccWriteOffs3Years: 0,
+    nonCcSettlements3Years: 0,
+    nonCcWriteOffs3Years: 0,
     
     // Default and account counts
-    activeDefaultsCount: whatIfBaselineData.activeDefaultsCount,
-    closedDefaultsCount: whatIfBaselineData.closedDefaultsCount,
-    openLoanAccounts: whatIfBaselineData.openLoanAccounts,
-    closedLoanAccounts: whatIfBaselineData.closedLoanAccounts,
+    activeDefaultsCount: 0,
+    closedDefaultsCount: 1,
+    openLoanAccounts: 2,
+    closedLoanAccounts: 3,
     
     // EMI bounce counts
-    emiBounce0: whatIfBaselineData.emiBounce0,
-    emiBounce1: whatIfBaselineData.emiBounce1,
-    emiBounce2: whatIfBaselineData.emiBounce2,
-    emiBounce3: whatIfBaselineData.emiBounce3,
+    emiBounce0: 0,
+    emiBounce1: 1,
+    emiBounce2: 0,
+    emiBounce3: 0,
   });
 
   const [savedScenarios, setSavedScenarios] = useState([]);
   
   const resetScenario = () => {
     setScenario({
+      // Basic variables
       creditScore: whatIfBaselineData.creditScore,
       maxCreditEnquiries: whatIfBaselineData.maxCreditEnquiries,
       minABB: whatIfBaselineData.minABB,
       maxEIR: whatIfBaselineData.maxEIR,
       
-      chequeBounces: whatIfBaselineData.chequeBounces,
-      willfulDefault: whatIfBaselineData.willfulDefault,
-      unsecuredLoansCount: whatIfBaselineData.unsecuredLoansCount,
-      securedLoansCount: whatIfBaselineData.securedLoansCount,
-      bureauHistory: whatIfBaselineData.bureauHistory,
+      // Additional variables with realistic defaults
+      chequeBounces: 2,
+      willfulDefault: false,
+      unsecuredLoansCount: 3,
+      securedLoansCount: 1,
+      bureauHistory: 36,
       
-      activeDpd1Plus: whatIfBaselineData.activeDpd1Plus,
-      closedDpd1Plus: whatIfBaselineData.closedDpd1Plus,
-      activeDpd30Plus: whatIfBaselineData.activeDpd30Plus,
-      closedDpd30Plus: whatIfBaselineData.closedDpd30Plus,
-      activeDpd60Plus: whatIfBaselineData.activeDpd60Plus,
-      closedDpd60Plus: whatIfBaselineData.closedDpd60Plus,
-      activeDpd90Plus: whatIfBaselineData.activeDpd90Plus,
-      closedDpd90Plus: whatIfBaselineData.closedDpd90Plus,
+      // DPD variables
+      activeDpd1Plus: 2,
+      closedDpd1Plus: 1,
+      activeDpd30Plus: 1,
+      closedDpd30Plus: 1,
+      activeDpd60Plus: 0,
+      closedDpd60Plus: 1,
+      activeDpd90Plus: 0,
+      closedDpd90Plus: 0,
       
-      ccSettlements3Years: whatIfBaselineData.ccSettlements3Years,
-      ccWriteOffs3Years: whatIfBaselineData.ccWriteOffs3Years,
-      nonCcSettlements3Years: whatIfBaselineData.nonCcSettlements3Years,
-      nonCcWriteOffs3Years: whatIfBaselineData.nonCcWriteOffs3Years,
+      // Credit card and loan history
+      ccSettlements3Years: 1,
+      ccWriteOffs3Years: 0,
+      nonCcSettlements3Years: 0,
+      nonCcWriteOffs3Years: 0,
       
-      activeDefaultsCount: whatIfBaselineData.activeDefaultsCount,
-      closedDefaultsCount: whatIfBaselineData.closedDefaultsCount,
-      openLoanAccounts: whatIfBaselineData.openLoanAccounts,
-      closedLoanAccounts: whatIfBaselineData.closedLoanAccounts,
+      // Default and account counts
+      activeDefaultsCount: 0,
+      closedDefaultsCount: 1,
+      openLoanAccounts: 2,
+      closedLoanAccounts: 3,
       
-      emiBounce0: whatIfBaselineData.emiBounce0,
-      emiBounce1: whatIfBaselineData.emiBounce1,
-      emiBounce2: whatIfBaselineData.emiBounce2,
-      emiBounce3: whatIfBaselineData.emiBounce3,
+      // EMI bounce counts
+      emiBounce0: 0,
+      emiBounce1: 1,
+      emiBounce2: 0,
+      emiBounce3: 0,
     });
   };
 
