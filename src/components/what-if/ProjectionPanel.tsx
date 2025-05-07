@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { whatIfBaselineData } from "@/data/mockData";
+import { calculateRiskScore } from "@/lib/riskCalculations";
 
 interface ProjectionPanelProps {
   scenario: {
@@ -8,6 +9,32 @@ interface ProjectionPanelProps {
     maxCreditEnquiries: number;
     minABB: number;
     maxEIR: number;
+    chequeBounces?: number;
+    willfulDefault?: boolean;
+    unsecuredLoansCount?: number;
+    securedLoansCount?: number;
+    bureauHistory?: number;
+    activeDpd1Plus?: number;
+    closedDpd1Plus?: number;
+    activeDpd30Plus?: number;
+    closedDpd30Plus?: number;
+    activeDpd60Plus?: number;
+    closedDpd60Plus?: number;
+    activeDpd90Plus?: number;
+    closedDpd90Plus?: number;
+    ccSettlements3Years?: number;
+    ccWriteOffs3Years?: number;
+    nonCcSettlements3Years?: number;
+    nonCcWriteOffs3Years?: number;
+    activeDefaultsCount?: number;
+    closedDefaultsCount?: number;
+    openLoanAccounts?: number;
+    closedLoanAccounts?: number;
+    emiBounce0?: number;
+    emiBounce1?: number;
+    emiBounce2?: number;
+    emiBounce3?: number;
+    [key: string]: any;
   };
 }
 
@@ -16,14 +43,62 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
   const calculateProjectedNpa = () => {
     const baseline = whatIfBaselineData.npa;
     
-    // Impact weights for each parameter (simplified calculation)
+    // Impact weights for basic parameters
     const creditScoreImpact = (scenario.creditScore - whatIfBaselineData.creditScore) * 0.005;
     const enquiriesImpact = (whatIfBaselineData.maxCreditEnquiries - scenario.maxCreditEnquiries) * 0.05;
     const abbImpact = (scenario.minABB - whatIfBaselineData.minABB) * 0.00002;
     const eirImpact = (whatIfBaselineData.maxEIR - scenario.maxEIR) * 1.2;
     
+    // Impact weights for advanced parameters - set defaults if not present
+    const chequeBounces = scenario.chequeBounces || 0;
+    const willfulDefault = scenario.willfulDefault ? 0.8 : 0;
+    const unsecuredImpact = ((scenario.unsecuredLoansCount || 0) - whatIfBaselineData.unsecuredLoansCount) * 0.15;
+    const securedImpact = ((scenario.securedLoansCount || 0) - whatIfBaselineData.securedLoansCount) * 0.05;
+    
+    // DPD impacts
+    const dpd1PlusImpact = ((scenario.activeDpd1Plus || 0) + (scenario.closedDpd1Plus || 0) * 0.5) * 0.1;
+    const dpd30PlusImpact = ((scenario.activeDpd30Plus || 0) + (scenario.closedDpd30Plus || 0) * 0.5) * 0.2;
+    const dpd60PlusImpact = ((scenario.activeDpd60Plus || 0) + (scenario.closedDpd60Plus || 0) * 0.5) * 0.4;
+    const dpd90PlusImpact = ((scenario.activeDpd90Plus || 0) + (scenario.closedDpd90Plus || 0) * 0.5) * 0.8;
+    
+    // Credit card and loan settlement impacts
+    const ccSettlementsImpact = (scenario.ccSettlements3Years || 0) * 0.3;
+    const ccWriteOffsImpact = (scenario.ccWriteOffs3Years || 0) * 0.5;
+    const nonCcSettlementsImpact = (scenario.nonCcSettlements3Years || 0) * 0.4;
+    const nonCcWriteOffsImpact = (scenario.nonCcWriteOffs3Years || 0) * 0.7;
+    
+    // Default and account impacts
+    const activeDefaultsImpact = (scenario.activeDefaultsCount || 0) * 0.3;
+    const closedDefaultsImpact = (scenario.closedDefaultsCount || 0) * 0.15;
+    
+    // EMI bounce impacts
+    const emiBounceImpact = 
+      (scenario.emiBounce0 || 0) * 0.05 + 
+      (scenario.emiBounce1 || 0) * 0.1 + 
+      (scenario.emiBounce2 || 0) * 0.2 + 
+      (scenario.emiBounce3 || 0) * 0.3;
+    
+    // Calculate advanced impacts
+    const advancedImpact = 
+      chequeBounces * 0.2 + 
+      willfulDefault + 
+      unsecuredImpact + 
+      securedImpact +
+      dpd1PlusImpact +
+      dpd30PlusImpact +
+      dpd60PlusImpact +
+      dpd90PlusImpact +
+      ccSettlementsImpact +
+      ccWriteOffsImpact +
+      nonCcSettlementsImpact +
+      nonCcWriteOffsImpact +
+      activeDefaultsImpact +
+      closedDefaultsImpact +
+      emiBounceImpact;
+    
     // Calculate total impact (negative means reduction in NPA)
-    const totalImpact = -(creditScoreImpact + enquiriesImpact + abbImpact + eirImpact);
+    const basicImpact = -(creditScoreImpact + enquiriesImpact + abbImpact + eirImpact);
+    const totalImpact = basicImpact + advancedImpact;
     
     // Calculate projected NPA
     let projectedNpa = baseline + totalImpact;
@@ -36,14 +111,25 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
   const calculateApprovalChange = () => {
     const baseline = whatIfBaselineData.approvalRate;
     
-    // Impact weights for approval rate (simplified)
+    // Impact weights for basic parameters
     const creditScoreImpact = (scenario.creditScore - whatIfBaselineData.creditScore) * -0.15;
     const enquiriesImpact = (scenario.maxCreditEnquiries - whatIfBaselineData.maxCreditEnquiries) * 2;
     const abbImpact = (scenario.minABB - whatIfBaselineData.minABB) * -0.0003;
     const eirImpact = (scenario.maxEIR - whatIfBaselineData.maxEIR) * 20;
     
+    // Impact from advanced parameters
+    const chequeBounces = (scenario.chequeBounces || 0) * -2.5;
+    const willfulDefault = scenario.willfulDefault ? -15 : 0;
+    const unsecuredImpact = ((scenario.unsecuredLoansCount || 0) - whatIfBaselineData.unsecuredLoansCount) * -1.2;
+    const dpd90PlusImpact = ((scenario.activeDpd90Plus || 0) + (scenario.closedDpd90Plus || 0) * 0.5) * -3;
+    const writeOffsImpact = ((scenario.ccWriteOffs3Years || 0) + (scenario.nonCcWriteOffs3Years || 0)) * -4;
+    
+    // Calculate advanced impacts
+    const advancedImpact = chequeBounces + willfulDefault + unsecuredImpact + dpd90PlusImpact + writeOffsImpact;
+    
     // Calculate total impact
-    const totalImpact = creditScoreImpact + enquiriesImpact + abbImpact + eirImpact;
+    const basicImpact = creditScoreImpact + enquiriesImpact + abbImpact + eirImpact;
+    const totalImpact = basicImpact + advancedImpact;
     
     // Calculate new approval rate
     let newApprovalRate = baseline + totalImpact;
@@ -58,6 +144,11 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
   const npaReductionPercent = (npaReduction / whatIfBaselineData.npa) * 100;
   const approvalRateChange = approvalRate - whatIfBaselineData.approvalRate;
   
+  // Calculate risk score
+  const riskScore = calculateRiskScore(scenario);
+  const baselineRiskScore = calculateRiskScore(whatIfBaselineData);
+  const riskScoreChange = riskScore - baselineRiskScore;
+  
   return (
     <Card className="shadow-card">
       <CardHeader>
@@ -70,7 +161,7 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
             <span className="text-sm text-muted-foreground mb-2">Projected NPA</span>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold">{projectedNpa.toFixed(1)}%</span>
-              <span className={`text-sm font-medium ${npaReduction >= 0 ? 'text-good' : 'text-poor'}`}>
+              <span className={`text-sm font-medium ${npaReduction >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                 {npaReduction >= 0 ? '↓' : '↑'} {Math.abs(npaReduction).toFixed(1)}%
               </span>
             </div>
@@ -82,17 +173,34 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
             </span>
           </div>
           
+          {/* Risk Score */}
+          <div className="flex flex-col items-center">
+            <span className="text-sm text-muted-foreground mb-2">Risk Score</span>
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-bold">{riskScore}</span>
+              <span className={`text-sm font-medium ${riskScoreChange <= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                {riskScoreChange <= 0 ? '↓' : '↑'} {Math.abs(riskScoreChange)}
+              </span>
+            </div>
+            <span className="text-xs text-muted-foreground mt-1">
+              {riskScoreChange <= 0 
+                ? `${Math.abs(riskScoreChange)} points better than baseline`
+                : `${riskScoreChange} points worse than baseline`
+              }
+            </span>
+          </div>
+          
           {/* Approval Rate Impact */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm">Approval Rate Impact</span>
-              <span className={`text-sm font-medium ${approvalRateChange >= 0 ? 'text-good' : 'text-poor'}`}>
+              <span className={`text-sm font-medium ${approvalRateChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                 {approvalRateChange >= 0 ? '+' : ''}{approvalRateChange.toFixed(1)}%
               </span>
             </div>
             <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
               <div 
-                className={`h-full ${approvalRateChange >= 0 ? 'bg-good' : 'bg-poor'} rounded-full transition-all duration-300`}
+                className={`h-full ${approvalRateChange >= 0 ? 'bg-green-500' : 'bg-red-500'} rounded-full transition-all duration-300`}
                 style={{ width: `${Math.min(Math.abs(approvalRateChange) * 2, 100)}%` }}
               ></div>
             </div>

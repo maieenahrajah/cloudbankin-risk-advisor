@@ -3,7 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Save } from "lucide-react";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ScenarioControlsProps {
   scenario: {
@@ -11,17 +14,17 @@ interface ScenarioControlsProps {
     maxCreditEnquiries: number;
     minABB: number;
     maxEIR: number;
+    [key: string]: any;
   };
-  setScenario: React.Dispatch<React.SetStateAction<{
-    creditScore: number;
-    maxCreditEnquiries: number;
-    minABB: number;
-    maxEIR: number;
-  }>>;
+  setScenario: React.Dispatch<React.SetStateAction<any>>;
   resetScenario: () => void;
+  saveScenario: (name: string) => void;
 }
 
-const ScenarioControls = ({ scenario, setScenario, resetScenario }: ScenarioControlsProps) => {
+const ScenarioControls = ({ scenario, setScenario, resetScenario, saveScenario }: ScenarioControlsProps) => {
+  const [scenarioName, setScenarioName] = useState("");
+  const { toast } = useToast();
+
   const handleCreditScoreChange = (value: number[]) => {
     setScenario((prev) => ({
       ...prev,
@@ -48,6 +51,23 @@ const ScenarioControls = ({ scenario, setScenario, resetScenario }: ScenarioCont
       ...prev,
       maxEIR: value[0] / 100,
     }));
+  };
+
+  const handleSaveScenario = () => {
+    if (!scenarioName.trim()) {
+      toast({
+        title: "Error",
+        description: "Please provide a scenario name",
+        variant: "destructive",
+      });
+      return;
+    }
+    saveScenario(scenarioName);
+    setScenarioName("");
+    toast({
+      title: "Scenario Saved",
+      description: `"${scenarioName}" has been saved successfully.`,
+    });
   };
 
   return (
@@ -141,7 +161,22 @@ const ScenarioControls = ({ scenario, setScenario, resetScenario }: ScenarioCont
           <p className="text-xs text-muted-foreground">Maximum allowed ratio of expenses to income</p>
         </div>
 
-        <div className="pt-2">
+        <div className="flex flex-col gap-2 pt-2">
+          <div className="flex gap-2">
+            <Input 
+              placeholder="Scenario name" 
+              value={scenarioName}
+              onChange={(e) => setScenarioName(e.target.value)}
+            />
+            <Button 
+              variant="outline" 
+              size="icon"
+              onClick={handleSaveScenario}
+              title="Save scenario"
+            >
+              <Save className="h-4 w-4" />
+            </Button>
+          </div>
           <Button 
             variant="outline" 
             className="w-full"
