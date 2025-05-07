@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { whatIfBaselineData } from "@/data/mockData";
 import { calculateRiskScore } from "@/lib/riskCalculations";
@@ -150,20 +149,20 @@ const ProjectionPanel = ({ scenario }: ProjectionPanelProps) => {
   const baselineRiskScore = useMemo(() => calculateRiskScore(whatIfBaselineData), []);
   const riskScoreChange = riskScore - baselineRiskScore;
   
-  // Calculate risk category
+  // Calculate risk category with adjusted thresholds for more variation
   const getRiskCategory = (score: number) => {
-    if (score < 600) return { label: "Very Low Risk", color: "#16a34a" };
+    if (score < 550) return { label: "Very Low Risk", color: "#16a34a" };
     if (score < 650) return { label: "Low Risk", color: "#84cc16" };
-    if (score < 700) return { label: "Moderate Risk", color: "#facc15" };
-    if (score < 750) return { label: "High Risk", color: "#f97316" };
+    if (score < 725) return { label: "Moderate Risk", color: "#facc15" };
+    if (score < 800) return { label: "High Risk", color: "#f97316" };
     return { label: "Very High Risk", color: "#ef4444" };
   };
   
   const riskCategory = getRiskCategory(riskScore);
   const baselineCategory = getRiskCategory(baselineRiskScore);
   
-  // Calculate gauge position for risk meter (0-100%)
-  const gaugePosition = Math.min(Math.max((riskScore - 500) / 500 * 100, 0), 100);
+  // Calculate gauge position for risk meter (adjusted range for better visualization)
+  const gaugePosition = Math.min(Math.max((riskScore - 450) / 550 * 100, 0), 100);
   
   return (
     <Card className="shadow-card">

@@ -9,7 +9,7 @@ import AdvancedControls from "@/components/what-if/AdvancedControls";
 import ScenarioManager from "@/components/what-if/ScenarioManager";
 
 const WhatIfScenarios = () => {
-  // Create more realistic default scenario with non-zero values for advanced parameters
+  // Create more dramatic default scenario with varied values for advanced parameters
   const [scenario, setScenario] = useState({
     // Basic variables
     creditScore: whatIfBaselineData.creditScore,
@@ -17,39 +17,39 @@ const WhatIfScenarios = () => {
     minABB: whatIfBaselineData.minABB,
     maxEIR: whatIfBaselineData.maxEIR,
     
-    // Additional variables
-    chequeBounces: 2,
+    // Additional variables with more dramatic values
+    chequeBounces: 3,
     willfulDefault: false,
-    unsecuredLoansCount: 3,
-    securedLoansCount: 1,
-    bureauHistory: 36,
+    unsecuredLoansCount: 4,
+    securedLoansCount: 2,
+    bureauHistory: 24, // Relatively short history (2 years)
     
-    // DPD variables
-    activeDpd1Plus: 2,
-    closedDpd1Plus: 1,
-    activeDpd30Plus: 1,
+    // DPD variables with more varied values
+    activeDpd1Plus: 3,
+    closedDpd1Plus: 2,
+    activeDpd30Plus: 2,
     closedDpd30Plus: 1,
-    activeDpd60Plus: 0,
+    activeDpd60Plus: 1,
     closedDpd60Plus: 1,
     activeDpd90Plus: 0,
-    closedDpd90Plus: 0,
+    closedDpd90Plus: 1,
     
-    // Credit card and loan history
+    // Credit card and loan history with more significant values
     ccSettlements3Years: 1,
-    ccWriteOffs3Years: 0,
+    ccWriteOffs3Years: 1,
     nonCcSettlements3Years: 0,
-    nonCcWriteOffs3Years: 0,
+    nonCcWriteOffs3Years: 1,
     
     // Default and account counts
-    activeDefaultsCount: 0,
-    closedDefaultsCount: 1,
-    openLoanAccounts: 2,
-    closedLoanAccounts: 3,
+    activeDefaultsCount: 1,
+    closedDefaultsCount: 2,
+    openLoanAccounts: 3,
+    closedLoanAccounts: 4,
     
-    // EMI bounce counts
-    emiBounce0: 0,
-    emiBounce1: 1,
-    emiBounce2: 0,
+    // EMI bounce counts with more variation
+    emiBounce0: 1,
+    emiBounce1: 2,
+    emiBounce2: 1,
     emiBounce3: 0,
   });
 
@@ -63,39 +63,39 @@ const WhatIfScenarios = () => {
       minABB: whatIfBaselineData.minABB,
       maxEIR: whatIfBaselineData.maxEIR,
       
-      // Additional variables with realistic defaults
-      chequeBounces: 2,
+      // Additional variables with more dramatic values
+      chequeBounces: 3,
       willfulDefault: false,
-      unsecuredLoansCount: 3,
-      securedLoansCount: 1,
-      bureauHistory: 36,
+      unsecuredLoansCount: 4,
+      securedLoansCount: 2,
+      bureauHistory: 24,
       
-      // DPD variables
-      activeDpd1Plus: 2,
-      closedDpd1Plus: 1,
-      activeDpd30Plus: 1,
+      // DPD variables with more varied values
+      activeDpd1Plus: 3,
+      closedDpd1Plus: 2,
+      activeDpd30Plus: 2,
       closedDpd30Plus: 1,
-      activeDpd60Plus: 0,
+      activeDpd60Plus: 1,
       closedDpd60Plus: 1,
       activeDpd90Plus: 0,
-      closedDpd90Plus: 0,
+      closedDpd90Plus: 1,
       
-      // Credit card and loan history
+      // Credit card and loan history with more significant values
       ccSettlements3Years: 1,
-      ccWriteOffs3Years: 0,
+      ccWriteOffs3Years: 1,
       nonCcSettlements3Years: 0,
-      nonCcWriteOffs3Years: 0,
+      nonCcWriteOffs3Years: 1,
       
       // Default and account counts
-      activeDefaultsCount: 0,
-      closedDefaultsCount: 1,
-      openLoanAccounts: 2,
-      closedLoanAccounts: 3,
+      activeDefaultsCount: 1,
+      closedDefaultsCount: 2,
+      openLoanAccounts: 3,
+      closedLoanAccounts: 4,
       
-      // EMI bounce counts
-      emiBounce0: 0,
-      emiBounce1: 1,
-      emiBounce2: 0,
+      // EMI bounce counts with more variation
+      emiBounce0: 1,
+      emiBounce1: 2,
+      emiBounce2: 1,
       emiBounce3: 0,
     });
   };
