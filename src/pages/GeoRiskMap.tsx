@@ -9,7 +9,7 @@ import { RegionData } from "@/data/mockData";
 const geoRiskData: RegionData[] = [
   {
     id: "region-1",
-    state: "Maharashtra",
+    name: "Maharashtra",
     riskScore: 65,
     loanVolume: 1250000000, // 125 Cr
     npaRate: 3.2,
@@ -27,7 +27,7 @@ const geoRiskData: RegionData[] = [
   },
   {
     id: "region-2",
-    state: "Karnataka",
+    name: "Karnataka",
     riskScore: 48,
     loanVolume: 980000000, // 98 Cr
     npaRate: 2.5,
@@ -44,7 +44,7 @@ const geoRiskData: RegionData[] = [
   },
   {
     id: "region-3",
-    state: "Tamil Nadu",
+    name: "Tamil Nadu",
     riskScore: 52,
     loanVolume: 850000000, // 85 Cr
     npaRate: 2.8,
@@ -61,7 +61,7 @@ const geoRiskData: RegionData[] = [
   },
   {
     id: "region-4",
-    state: "Uttar Pradesh",
+    name: "Uttar Pradesh",
     riskScore: 78,
     loanVolume: 1320000000, // 132 Cr
     npaRate: 5.6,

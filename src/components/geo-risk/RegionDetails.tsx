@@ -2,23 +2,7 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
-interface RegionData {
-  id: string;
-  state: string;
-  riskScore: number;
-  loanVolume: number;
-  npaRate: number;
-  keyFactors: string[];
-  riskLevel: "high" | "medium" | "low";
-  trend: "improving" | "stable" | "worsening";
-  approvalRate: number;
-  suggestedEIRCap: number;
-  districts?: {
-    name: string;
-    npaRate: number;
-  }[];
-}
+import { RegionData } from "@/data/mockData";
 
 interface RegionDetailsProps {
   region: RegionData;
@@ -36,7 +20,7 @@ const RegionDetails = ({ region }: RegionDetailsProps) => {
     <div className="space-y-6">
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="text-lg font-medium mb-1">{region.state}</h2>
+          <h2 className="text-lg font-medium mb-1">{region.name}</h2>
           <p className="text-sm text-muted-foreground">
             Risk profile and policy recommendations
           </p>

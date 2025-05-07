@@ -1,22 +1,6 @@
 
 import { Badge } from "@/components/ui/badge";
-
-interface RegionData {
-  id: string;
-  state: string;  // Changed from name to state
-  riskScore: number;
-  loanVolume: number;
-  npaRate: number;
-  keyFactors: string[];
-  riskLevel: "high" | "medium" | "low";
-  trend: "improving" | "stable" | "worsening";
-  approvalRate: number;
-  suggestedEIRCap: number;
-  districts?: {
-    name: string;
-    npaRate: number;
-  }[];
-}
+import { RegionData } from "@/data/mockData";
 
 interface IndiaMapProps {
   regions: RegionData[];
@@ -67,10 +51,10 @@ const IndiaMap = ({ regions, selectedRegion, onRegionSelect }: IndiaMapProps) =>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {regions.map((region) => (
               <div
-                key={region.state}
+                key={region.name}
                 className={`
                   px-3 py-2 rounded text-sm cursor-pointer flex items-center
-                  ${selectedRegion.state === region.state ? 'bg-primary text-primary-foreground' : 'bg-muted/50 hover:bg-muted'}
+                  ${selectedRegion.name === region.name ? 'bg-primary text-primary-foreground' : 'bg-muted/50 hover:bg-muted'}
                 `}
                 onClick={() => onRegionSelect(region)}
               >
@@ -78,7 +62,7 @@ const IndiaMap = ({ regions, selectedRegion, onRegionSelect }: IndiaMapProps) =>
                   className="h-3 w-3 rounded-full mr-2"
                   style={{ backgroundColor: getRiskColor(region.riskLevel) }}
                 />
-                <span className="truncate">{region.state}</span>
+                <span className="truncate">{region.name}</span>
               </div>
             ))}
           </div>
