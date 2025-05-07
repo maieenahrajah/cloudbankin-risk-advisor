@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { 
@@ -48,7 +47,7 @@ const Sidebar = () => {
   const navItems = [
     {
       icon: <Home className="h-5 w-5" />,
-      href: "/",
+      href: "/dashboard",
       title: "Dashboard",
     },
     {
