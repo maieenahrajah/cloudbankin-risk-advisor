@@ -65,10 +65,10 @@ const PolicySelector = ({
                 <div>
                   <p className="text-muted-foreground">NPA</p>
                   <p className={`font-semibold ${
-                    policy.performance.npaRate < 3 ? "text-good" : 
-                    policy.performance.npaRate > 4 ? "text-poor" : ""
+                    policy.performance.npa30Day < 3 ? "text-good" : 
+                    policy.performance.npa30Day > 4 ? "text-poor" : ""
                   }`}>
-                    {policy.performance.npaRate}%
+                    {policy.performance.npa30Day}%
                   </p>
                 </div>
                 <div>

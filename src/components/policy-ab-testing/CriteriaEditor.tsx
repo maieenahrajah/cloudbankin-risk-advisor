@@ -16,20 +16,18 @@ interface CriteriaEditorProps {
 
 const CriteriaEditor = ({ policies }: CriteriaEditorProps) => {
   const criteriaLabels: Record<keyof PolicyVersion['criteria'], string> = {
-    minCreditScore: 'Min. Credit Score',
-    maxEIR: 'Max. EIR (%)',
-    minABB: 'Min. ABB (₹)',
-    maxDPD: 'Max. DPD (Days)',
-    maxEnquiries: 'Max. Credit Enquiries'
+    creditScore: 'Min. Credit Score',
+    maxDti: 'Max. DTI (%)',
+    minIncome: 'Min. Income (₹)',
+    maxLoanToValue: 'Max. LTV (%)'
   };
 
   // Ranges for sliders
   const ranges = {
-    minCreditScore: { min: 500, max: 800 },
-    maxEIR: { min: 20, max: 80 },
-    minABB: { min: 5000, max: 50000 },
-    maxDPD: { min: 0, max: 60 },
-    maxEnquiries: { min: 0, max: 10 }
+    creditScore: { min: 500, max: 800 },
+    maxDti: { min: 20, max: 80 },
+    minIncome: { min: 5000, max: 50000 },
+    maxLoanToValue: { min: 0, max: 100 }
   };
 
   return (
@@ -69,7 +67,7 @@ const CriteriaEditor = ({ policies }: CriteriaEditorProps) => {
                         value={[value]}
                         min={range.min}
                         max={range.max}
-                        step={criteriaKey === 'minABB' ? 1000 : 1}
+                        step={criteriaKey === 'minIncome' ? 1000 : 1}
                         disabled
                       />
                     </div>
@@ -86,9 +84,10 @@ const CriteriaEditor = ({ policies }: CriteriaEditorProps) => {
 
 function formatCriteriaValue(key: keyof PolicyVersion['criteria'], value: number): string {
   switch (key) {
-    case 'minABB':
+    case 'minIncome':
       return `₹${value.toLocaleString()}`;
-    case 'maxEIR':
+    case 'maxDti':
+    case 'maxLoanToValue':
       return `${value}%`;
     default:
       return `${value}`;

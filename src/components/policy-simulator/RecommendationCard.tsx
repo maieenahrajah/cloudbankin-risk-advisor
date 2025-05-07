@@ -35,7 +35,7 @@ const RecommendationCard = ({ recommendation }: RecommendationCardProps) => {
           </div>
           <div className="flex justify-between items-center">
             <div className="text-sm text-primary">Suggested</div>
-            <div className="text-sm font-medium text-primary">{recommendation.suggestedValue}</div>
+            <div className="text-sm font-medium text-primary">{recommendation.recommendedValue}</div>
           </div>
           <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
             <div 
@@ -49,8 +49,8 @@ const RecommendationCard = ({ recommendation }: RecommendationCardProps) => {
               <AccordionTrigger className="py-2 text-sm">More Information</AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-2 text-sm">
-                  <p><span className="font-medium">Justification:</span> {recommendation.justification}</p>
-                  <p><span className="font-medium">Expected NPA Impact:</span> {recommendation.impact > 0 ? '+' : ''}{recommendation.impact.toFixed(1)}%</p>
+                  <p><span className="font-medium">Justification:</span> Lower credit threshold improves portfolio quality</p>
+                  <p><span className="font-medium">Expected NPA Impact:</span> {recommendation.impact.npa > 0 ? '+' : ''}{recommendation.impact.npa.toFixed(1)}%</p>
                   <p className="text-xs text-muted-foreground pt-2">
                     AI analysis shows this change would have the most significant impact on portfolio health.
                   </p>

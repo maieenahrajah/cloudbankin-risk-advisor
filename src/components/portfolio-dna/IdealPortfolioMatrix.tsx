@@ -9,8 +9,13 @@ interface IdealPortfolioMatrixProps {
 const IdealPortfolioMatrix = ({ attributes }: IdealPortfolioMatrixProps) => {
   // Sort attributes by improvement potential (descending)
   const sortedAttributes = [...attributes].sort(
-    (a, b) => b.improvementPotential - a.improvementPotential
+    (a, b) => (b.idealValue - b.currentValue) - (a.idealValue - a.currentValue)
   );
+
+  // Calculate improvement potential for display purposes
+  const getImprovementPotential = (attr: PortfolioAttributes) => {
+    return Math.abs(attr.idealValue - attr.currentValue);
+  };
 
   return (
     <div>
@@ -28,9 +33,9 @@ const IdealPortfolioMatrix = ({ attributes }: IdealPortfolioMatrixProps) => {
             className="bg-muted/20 rounded-xl p-5 border"
           >
             <div className="flex justify-between items-start">
-              <h3 className="font-medium">{attribute.category}</h3>
+              <h3 className="font-medium">{attribute.name}</h3>
               <Badge variant="outline">
-                +{attribute.improvementPotential}% potential
+                +{getImprovementPotential(attribute)}% potential
               </Badge>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-4 text-sm">
@@ -53,7 +58,7 @@ const IdealPortfolioMatrix = ({ attributes }: IdealPortfolioMatrixProps) => {
             </div>
             <div className="mt-4 text-sm">
               <p className="font-medium">Recommended Action:</p>
-              <p className="mt-1">{attribute.recommendation}</p>
+              <p className="mt-1">Optimize portfolio allocation based on risk-return analysis</p>
             </div>
           </div>
         ))}
@@ -73,15 +78,15 @@ const IdealPortfolioMatrix = ({ attributes }: IdealPortfolioMatrixProps) => {
           <tbody>
             {sortedAttributes.map((attribute, index) => (
               <tr key={index} className="border-t">
-                <td className="p-3">{attribute.category}</td>
+                <td className="p-3">{attribute.name}</td>
                 <td className="p-3 text-center">{attribute.currentValue}%</td>
                 <td className="p-3 text-center text-primary">{attribute.idealValue}%</td>
                 <td className="p-3 text-center">
                   <span className="font-medium text-primary">
-                    {attribute.improvementPotential}%
+                    {getImprovementPotential(attribute)}%
                   </span>
                 </td>
-                <td className="p-3 text-sm">{attribute.recommendation}</td>
+                <td className="p-3 text-sm">Adjust allocation based on market conditions</td>
               </tr>
             ))}
           </tbody>

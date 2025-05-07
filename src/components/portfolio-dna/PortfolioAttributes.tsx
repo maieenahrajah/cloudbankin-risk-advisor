@@ -20,7 +20,7 @@ const PortfolioAttributesComp = ({ attributes }: PortfolioAttributesProps) => {
         {attributes.map((attribute, index) => (
           <div key={index}>
             <div className="flex justify-between mb-1.5">
-              <div className="font-medium">{attribute.category}</div>
+              <div className="font-medium">{attribute.name}</div>
               <div className="text-sm">
                 <span className="text-muted-foreground">Current:</span>{" "}
                 <span className="font-medium">{attribute.currentValue}%</span>
@@ -44,7 +44,7 @@ const PortfolioAttributesComp = ({ attributes }: PortfolioAttributesProps) => {
               </div>
             </div>
             <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
-              {attribute.recommendation}
+              Adjust portfolio allocation based on performance analysis
             </div>
           </div>
         ))}

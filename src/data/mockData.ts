@@ -1,4 +1,3 @@
-
 export const navLinks = [
   {
     name: "Dashboard",
@@ -770,7 +769,6 @@ export const policyVersions: PolicyVersion[] = [
   }
 ];
 
-// Policy Simulator Recommendations
 export interface PolicyRecommendation {
   id: string;
   parameter: string;
@@ -1035,4 +1033,3 @@ export const regionData: RegionData[] = [
     trend: "worsening"
   }
 ];
-

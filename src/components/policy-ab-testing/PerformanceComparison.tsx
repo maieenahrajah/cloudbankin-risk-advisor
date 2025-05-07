@@ -20,8 +20,8 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
   // Format data for the charts
   const npaData = policies.map(policy => ({
     name: policy.name,
-    value: policy.performance.npaRate,
-    fill: getColorForNPA(policy.performance.npaRate)
+    value: policy.performance.npa30Day,
+    fill: getColorForNPA(policy.performance.npa30Day)
   }));
 
   const approvalData = policies.map(policy => ({
@@ -32,14 +32,14 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
 
   const volumeData = policies.map(policy => ({
     name: policy.name,
-    value: policy.performance.loanVolume / 1000000, // Convert to millions
+    value: policy.performance.averageLoanSize / 1000000, // Convert to millions
     fill: "#3b82f6"
   }));
 
   const roiData = policies.map(policy => ({
     name: policy.name,
-    value: policy.performance.avgROI,
-    fill: getColorForROI(policy.performance.avgROI)
+    value: policy.performance.returnOnAssets,
+    fill: getColorForROI(policy.performance.returnOnAssets)
   }));
 
   function getColorForNPA(npaRate: number) {
@@ -63,8 +63,8 @@ const PerformanceComparison = ({ policies }: PerformanceComparisonProps) => {
   // Determine recommended policy based on a simple heuristic
   const recommendedPolicy = policies.reduce((best, current) => {
     // Score based on low NPA, high approval, and good ROI
-    const bestScore = (1 / best.performance.npaRate) * best.performance.approvalRate * best.performance.avgROI;
-    const currentScore = (1 / current.performance.npaRate) * current.performance.approvalRate * current.performance.avgROI;
+    const bestScore = (1 / best.performance.npa30Day) * best.performance.approvalRate * best.performance.returnOnAssets;
+    const currentScore = (1 / current.performance.npa30Day) * current.performance.approvalRate * current.performance.returnOnAssets;
     
     return currentScore > bestScore ? current : best;
   }, policies[0]);

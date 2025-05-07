@@ -11,15 +11,19 @@ const COLORS = ["#22c55e", "#3b82f6", "#fbbf24", "#8b5cf6", "#ef4444"];
 const LoanTypeMixComponent = ({ loanTypes }: LoanTypeMixProps) => {
   const currentData = loanTypes.map((type, index) => ({
     name: type.type,
-    value: type.currentPercentage,
+    value: type.percentage,
     color: COLORS[index % COLORS.length],
   }));
 
-  const idealData = loanTypes.map((type, index) => ({
-    name: type.type,
-    value: type.idealPercentage,
-    color: COLORS[index % COLORS.length],
-  }));
+  const idealData = loanTypes.map((type, index) => {
+    // Use the middle of optimal range as ideal
+    const idealPercentage = (type.optimalRange[0] + type.optimalRange[1]) / 2;
+    return {
+      name: type.type,
+      value: idealPercentage,
+      color: COLORS[index % COLORS.length],
+    };
+  });
 
   return (
     <div>
@@ -96,7 +100,8 @@ const LoanTypeMixComponent = ({ loanTypes }: LoanTypeMixProps) => {
         </thead>
         <tbody>
           {loanTypes.map((type, index) => {
-            const change = type.idealPercentage - type.currentPercentage;
+            const idealPercentage = (type.optimalRange[0] + type.optimalRange[1]) / 2;
+            const change = idealPercentage - type.percentage;
             return (
               <tr key={index} className="border-t">
                 <td className="py-2">
@@ -110,19 +115,19 @@ const LoanTypeMixComponent = ({ loanTypes }: LoanTypeMixProps) => {
                 </td>
                 <td className="text-right">
                   <span className={
-                    type.risk === "high" 
+                    type.riskScore > 50 
                       ? "text-poor" 
-                      : type.risk === "low" 
+                      : type.riskScore < 30 
                         ? "text-good" 
                         : ""
                   }>
-                    {type.risk.charAt(0).toUpperCase() + type.risk.slice(1)}
+                    {type.riskScore > 50 ? "High" : type.riskScore < 30 ? "Low" : "Medium"}
                   </span>
                 </td>
-                <td className="text-right">{type.avgROI}%</td>
+                <td className="text-right">{type.yield}%</td>
                 <td className="text-right">
                   <span className={change > 0 ? "text-good" : change < 0 ? "text-poor" : ""}>
-                    {change > 0 ? "+" : ""}{change}%
+                    {change > 0 ? "+" : ""}{change.toFixed(1)}%
                   </span>
                 </td>
               </tr>
