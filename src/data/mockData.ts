@@ -1,3 +1,4 @@
+
 export const navLinks = [
   {
     name: "Dashboard",
@@ -243,6 +244,7 @@ export interface LoanApprovalExplanation {
   approvalReason: string;
   confidenceScore: number;
   decisionFactors: { factor: string; impact: string; value: string | number; threshold?: string | number; }[];
+  alternatives?: string[];
 }
 
 export interface LoanRejectionExplanation {
@@ -251,6 +253,7 @@ export interface LoanRejectionExplanation {
   rejectionReason: string;
   confidenceScore: number;
   decisionFactors: { factor: string; impact: string; value: string | number; threshold?: string | number; }[];
+  alternatives?: string[];
 }
 
 export const approvalExplanations: LoanApprovalExplanation[] = [
@@ -263,7 +266,8 @@ export const approvalExplanations: LoanApprovalExplanation[] = [
       { factor: "Credit Score", impact: "low", value: 780, threshold: 650 },
       { factor: "Income Stability", impact: "low", value: "High", threshold: "Medium" },
       { factor: "Debt-to-Income Ratio", impact: "low", value: "22%", threshold: "35%" }
-    ]
+    ],
+    alternatives: ["Consider offering a higher credit limit", "Eligible for premium products"]
   },
   {
     loanId: "L-APR-002",
@@ -274,7 +278,8 @@ export const approvalExplanations: LoanApprovalExplanation[] = [
       { factor: "Credit Score", impact: "medium", value: 705, threshold: 650 },
       { factor: "Employment Duration", impact: "low", value: "4 years", threshold: "2 years" },
       { factor: "Existing Loans", impact: "medium", value: 2, threshold: 3 }
-    ]
+    ],
+    alternatives: ["Consider lower interest rates", "Offer credit monitoring services"]
   }
 ];
 
@@ -288,7 +293,8 @@ export const rejectionExplanations: LoanRejectionExplanation[] = [
       { factor: "Credit Score", impact: "high", value: 590, threshold: 650 },
       { factor: "Debt-to-Income Ratio", impact: "high", value: "48%", threshold: "35%" },
       { factor: "Recent Credit Enquiries", impact: "medium", value: 5, threshold: 3 }
-    ]
+    ],
+    alternatives: ["Recommend a secured loan product", "Reapply after 6 months"]
   },
   {
     loanId: "L-REJ-002",
@@ -299,7 +305,8 @@ export const rejectionExplanations: LoanRejectionExplanation[] = [
       { factor: "Monthly Income", impact: "high", value: "₹18,000", threshold: "₹25,000" },
       { factor: "Employment Stability", impact: "high", value: "Frequent changes", threshold: "Stable" },
       { factor: "Credit History Length", impact: "medium", value: "8 months", threshold: "12 months" }
-    ]
+    ],
+    alternatives: ["Consider with a co-applicant", "Apply for a lower loan amount"]
   }
 ];
 
@@ -850,4 +857,177 @@ export interface PortfolioAttributes {
   currentValue: number;
   idealValue: number;
   status: "optimal" | "acceptable" | "attention" | "critical";
+  category: string;
+  improvementPotential: number;
+  recommendation: string;
 }
+
+export const portfolioAttributes: PortfolioAttributes[] = [
+  {
+    id: "attr-1",
+    name: "Risk Diversification",
+    currentValue: 65,
+    idealValue: 85,
+    status: "attention",
+    category: "Risk Management",
+    improvementPotential: 20,
+    recommendation: "Increase exposure to lower-risk segments"
+  },
+  {
+    id: "attr-2",
+    name: "Sector Allocation",
+    currentValue: 72,
+    idealValue: 80,
+    status: "acceptable",
+    category: "Diversification",
+    improvementPotential: 8,
+    recommendation: "Reduce concentration in manufacturing sector"
+  },
+  {
+    id: "attr-3",
+    name: "Duration Balance",
+    currentValue: 58,
+    idealValue: 75,
+    status: "attention",
+    category: "Term Structure",
+    improvementPotential: 17,
+    recommendation: "Increase proportion of medium-term loans"
+  },
+  {
+    id: "attr-4",
+    name: "Collateral Coverage",
+    currentValue: 81,
+    idealValue: 85,
+    status: "optimal",
+    category: "Security",
+    improvementPotential: 4,
+    recommendation: "Maintain current collateral requirements"
+  },
+  {
+    id: "attr-5",
+    name: "Interest Rate Exposure",
+    currentValue: 45,
+    idealValue: 70,
+    status: "critical",
+    category: "Rate Risk",
+    improvementPotential: 25,
+    recommendation: "Shift toward fixed-rate products"
+  }
+];
+
+export interface LoanTypeMix {
+  type: string;
+  percentage: number;
+  optimalRange: [number, number];
+  yield: number;
+  riskScore: number;
+}
+
+export const loanTypeMix: LoanTypeMix[] = [
+  {
+    type: "Personal Loans",
+    percentage: 32,
+    optimalRange: [25, 30],
+    yield: 12.5,
+    riskScore: 65
+  },
+  {
+    type: "Home Loans",
+    percentage: 28,
+    optimalRange: [30, 35],
+    yield: 8.5,
+    riskScore: 25
+  },
+  {
+    type: "Auto Loans",
+    percentage: 18,
+    optimalRange: [15, 20],
+    yield: 9.2,
+    riskScore: 40
+  },
+  {
+    type: "Education Loans",
+    percentage: 12,
+    optimalRange: [10, 15],
+    yield: 10.8,
+    riskScore: 55
+  },
+  {
+    type: "Business Loans",
+    percentage: 10,
+    optimalRange: [15, 20],
+    yield: 14.5,
+    riskScore: 70
+  }
+];
+
+// Add RegionData interface for the geo-risk map
+export interface RegionData {
+  id: string;
+  name: string;
+  riskScore: number;
+  loanVolume: number;
+  npaRate: number;
+  approvalRate: number;
+  suggestedEIRCap: number;
+  keyFactors: string[];
+  riskLevel: "medium" | "high" | "low";
+  trend: "stable" | "improving" | "worsening";
+  districts: { name: string; npaRate: number }[];
+}
+
+// Add RiskPattern interface for hidden patterns
+export interface RiskPattern {
+  id: string;
+  pattern: string;
+  confidence: number;
+  impactedLoans: number;
+  defaultRate: number;
+  averageRate: number;
+  increase: number;
+  description: string;
+}
+
+// Add sample data for hidden risk patterns
+export const hiddenRiskPatterns: RiskPattern[] = [
+  {
+    id: "pattern-1",
+    pattern: "Late payment after job change",
+    confidence: 92,
+    impactedLoans: 1250,
+    defaultRate: 8.7,
+    averageRate: 3.4,
+    increase: 5.3,
+    description: "Borrowers who missed a payment within 3 months of changing jobs have 2.5x higher default rates"
+  },
+  {
+    id: "pattern-2",
+    pattern: "Dual credit card applications",
+    confidence: 88,
+    impactedLoans: 2780,
+    defaultRate: 6.9,
+    averageRate: 3.4,
+    increase: 3.5,
+    description: "Multiple credit card applications in the same quarter correlates with 2x higher default probability"
+  },
+  {
+    id: "pattern-3",
+    pattern: "Location + High DTI Ratio",
+    confidence: 95,
+    impactedLoans: 3450,
+    defaultRate: 9.2,
+    averageRate: 3.4,
+    increase: 5.8,
+    description: "Borrowers in certain pin codes with DTI > 50% show significantly higher default rates"
+  },
+  {
+    id: "pattern-4",
+    pattern: "Utility bill payment frequency",
+    confidence: 86,
+    impactedLoans: 4120,
+    defaultRate: 5.8,
+    averageRate: 3.4,
+    increase: 2.4,
+    description: "Inconsistent utility bill payment patterns in the last 6 months correlate with higher risk"
+  }
+];
